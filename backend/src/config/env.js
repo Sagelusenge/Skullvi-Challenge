@@ -14,10 +14,13 @@ export const env = {
   port: numberFromEnv('PORT', 4000),
   nodeEnv: process.env.NODE_ENV || 'development',
   db: {
+    url: process.env.DATABASE_URL,
+    ssl: process.env.DB_SSL === 'true',
+    schema: process.env.DB_SCHEMA || 'public',
     host: process.env.DB_HOST || '127.0.0.1',
-    port: numberFromEnv('DB_PORT', 3306),
+    port: numberFromEnv('DB_PORT', 5432),
     database: process.env.DB_NAME || 'skullvi_talent_engine',
-    user: process.env.DB_USER || 'root',
+    user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || '',
     connectionLimit: numberFromEnv('DB_CONNECTION_LIMIT', 10)
   },

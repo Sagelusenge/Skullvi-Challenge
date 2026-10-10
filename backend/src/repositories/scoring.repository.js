@@ -2,8 +2,8 @@ import { execute } from '../config/database.js';
 
 export async function listCriteria(activeOnly = false, connection = null) {
   return execute(
-    `SELECT id, criterion_key, criterion_name, weight, max_score, is_active AS isActive,
-      created_at AS createdAt, updated_at AS updatedAt
+    `SELECT id, criterion_key, criterion_name, weight, max_score, is_active AS "isActive",
+      created_at AS "createdAt", updated_at AS "updatedAt"
      FROM scoring_criteria
      ${activeOnly ? 'WHERE is_active = TRUE' : ''}
      ORDER BY id ASC`,
@@ -19,8 +19,8 @@ export async function getActiveCriteria(connection = null) {
 export async function updateCriteria(criteria, connection = null) {
   await Promise.all(criteria.map((criterion) => execute(
     `UPDATE scoring_criteria
-     SET weight = ?, max_score = ?, is_active = ?, updated_at = CURRENT_TIMESTAMP
-     WHERE criterion_key = ?`,
+     SET weight = $1, max_score = $2, is_active = $3, updated_at = CURRENT_TIMESTAMP
+     WHERE criterion_key = $4`,
     [
       criterion.weight,
       criterion.maxScore ?? criterion.max_score ?? criterion.weight,

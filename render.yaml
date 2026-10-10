@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: skullvi-talent-engine
+    runtime: node
+    plan: free
+    region: virginia
+    branch: main
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/v1/health/ready
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: VITE_API_URL
+        value: /api/v1
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SCHEMA
+        value: skullvi
+      - key: DB_SSL
+        value: "false"
+      - key: JWT_SECRET
+        generateValue: true

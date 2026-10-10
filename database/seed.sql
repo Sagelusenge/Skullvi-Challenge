@@ -1,5 +1,3 @@
-USE skullvi_talent_engine;
-
 INSERT INTO scoring_criteria (criterion_key, criterion_name, weight, max_score, is_active)
 VALUES
   ('technical_skills', 'Technical skills', 35, 35, TRUE),
@@ -7,15 +5,12 @@ VALUES
   ('motivation', 'Motivation', 20, 20, TRUE),
   ('availability', 'Availability', 10, 10, TRUE),
   ('application_quality', 'Application quality', 10, 10, TRUE)
-ON DUPLICATE KEY UPDATE
-  criterion_name = VALUES(criterion_name),
-  weight = VALUES(weight),
-  max_score = VALUES(max_score),
-  is_active = VALUES(is_active);
+ON CONFLICT (criterion_key) DO NOTHING;
 
 INSERT INTO application_reference_sequences (year, last_number)
-VALUES (YEAR(CURRENT_DATE), 2)
-ON DUPLICATE KEY UPDATE last_number = GREATEST(last_number, 2);
+VALUES (2026, 2)
+ON CONFLICT (year) DO UPDATE
+SET last_number = GREATEST(application_reference_sequences.last_number, 2);
 
 INSERT INTO candidates (
   application_reference, first_name, last_name, email, phone, country, city, domain,

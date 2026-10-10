@@ -1,7 +1,9 @@
 # Database
 
 Database name: `skullvi_talent_engine`  
-Engine: MySQL, InnoDB, `utf8mb4`.
+Engine: PostgreSQL 14+ with UTF-8 encoding. `DATABASE_URL` selects the database;
+`DB_SCHEMA` selects the application schema (for example, `skullvi` on a shared instance).
+All application connections set their search path to that schema only.
 
 ## Tables
 
@@ -36,4 +38,18 @@ Engine: MySQL, InnoDB, `utf8mb4`.
 ## Indexes
 
 Indexes are defined for application reference, candidate email, status, domain, automatic score, final score, submission date, candidate skills, evaluations, and candidate history.
+
+## PostgreSQL Details
+
+IDs use integer identity columns. Scores use numeric columns; the driver returns
+them as JavaScript numbers. SQL aliases are quoted to preserve API field casing.
+Application references use an atomic yearly upsert with `RETURNING`, inside the
+candidate transaction, preventing duplicates under concurrent submissions.
+Boolean fields use PostgreSQL booleans; enumerated values use check constraints.
+Timestamps use `TIMESTAMPTZ`; update triggers maintain `updated_at`.
+
+`schema_migrations` records applied migration versions. A transaction-level
+advisory lock serializes concurrent migrations. The initial migration reads
+`schema.sql`; default criteria are inserted once from `defaults.sql`. Subsequent
+SQL migration files are read from `database/migrations/` in filename order.
 

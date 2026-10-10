@@ -6,7 +6,7 @@ async function checkDatabase() {
 
   return {
     connected: health[0]?.ok === 1,
-    scoringCriteria: criteria[0]?.total ?? 0
+    scoringCriteria: Number(criteria[0]?.total ?? 0)
   };
 }
 
@@ -22,7 +22,7 @@ try {
 } catch (error) {
   console.error('Database connection: FAILED');
   console.error(error.message);
-  console.error('Check backend/.env, MySQL service status, schema.sql, and seed.sql.');
+  console.error('Check backend/.env, PostgreSQL status, and run npm run db:migrate.');
   process.exitCode = 1;
 } finally {
   await pool.end();

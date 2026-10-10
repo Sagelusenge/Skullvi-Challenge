@@ -1,7 +1,5 @@
--- Run this as a MariaDB/MySQL administrator, then copy the same values into backend/.env.
--- Change the password before using the app beyond local development.
-
-CREATE USER IF NOT EXISTS 'skullvi_app'@'localhost' IDENTIFIED BY 'ChangeMe123!';
-GRANT ALL PRIVILEGES ON skullvi_talent_engine.* TO 'skullvi_app'@'localhost';
-FLUSH PRIVILEGES;
+-- Run as a PostgreSQL administrator for a dedicated local database.
+-- Replace the example password before running this file.
+CREATE ROLE skullvi_app LOGIN PASSWORD 'replace-with-your-password';
+CREATE DATABASE skullvi_talent_engine OWNER skullvi_app;
 
