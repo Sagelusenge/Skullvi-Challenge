@@ -1,4 +1,5 @@
 import Hero from '../../components/public/Hero.jsx';
+import { BookOpen, Box, Compass, Lightbulb, Search, Terminal } from 'lucide-react';
 
 export default function Home() {
   const steps = [
@@ -8,12 +9,12 @@ export default function Home() {
   ];
 
   const values = [
-    ['explore', 'Curiosité', "Désir d'explorer sous la surface technique"],
-    ['lightbulb', 'Créativité', 'Imagination appliquée aux contraintes'],
-    ['auto_stories', 'Capacité d’apprentissage', 'Assimilation rapide et rétroaction active'],
-    ['troubleshoot', 'Résolution de problèmes', "Décomposition méthodique de l'inconnu"],
-    ['terminal', 'Compétences techniques', 'Fondamentaux solides et code maintenable'],
-    ['deployed_code', 'Projets réalisés', "Preuves tangibles d'expérimentation"]
+    [Compass, 'Curiosité', "Désir d'explorer sous la surface technique"],
+    [Lightbulb, 'Créativité', 'Imagination appliquée aux contraintes'],
+    [BookOpen, 'Capacité d’apprentissage', 'Assimilation rapide et rétroaction active'],
+    [Search, 'Résolution de problèmes', "Décomposition méthodique de l'inconnu"],
+    [Terminal, 'Compétences techniques', 'Fondamentaux solides et code maintenable'],
+    [Box, 'Projets réalisés', "Preuves tangibles d'expérimentation"]
   ];
 
   return (
@@ -42,9 +43,9 @@ export default function Home() {
             de résoudre des problèmes et de transformer vos connaissances en solutions concrètes.
           </p>
           <div className="grid home-summary">
-            {values.map(([icon, title, copy]) => (
+            {values.map(([Icon, title, copy]) => (
               <article className="feature-tile" key={title}>
-                <span className="material-symbols-outlined feature-icon">{icon}</span>
+                <span className="feature-icon"><Icon size={20} aria-hidden="true" /></span>
                 <h3>{title}</h3>
                 <p>{copy}</p>
               </article>

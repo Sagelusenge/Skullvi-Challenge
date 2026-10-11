@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ShieldCheck, Terminal } from 'lucide-react';
 import Button from '../../components/common/Button.jsx';
 import Input from '../../components/common/Input.jsx';
 import { useAuth } from '../../hooks/useAuth.js';
@@ -26,7 +27,7 @@ export default function Login() {
     <section className="login-card panel">
       <span className="secure-chip"><span className="pulse-dot" /> Console d'administration sécurisée</span>
       <div className="brand" style={{ marginBottom: 16 }}>
-        <span className="brand-mark"><span className="material-symbols-outlined">terminal</span></span>
+        <span className="brand-mark"><Terminal size={20} aria-hidden="true" /></span>
         <span className="brand-text">
           <strong>SKULLVI</strong>
           <span>Talent Engine</span>
@@ -39,7 +40,7 @@ export default function Login() {
         <Input id="password" name="password" type="password" label="Mot de passe" value={credentials.password} onChange={(event) => setCredentials({ ...credentials, password: event.target.value })} />
         {error && <p className="field-error">{error}</p>}
         <Button type="submit">
-          <span className="material-symbols-outlined">security</span>
+          <ShieldCheck size={20} aria-hidden="true" />
           Se connecter à la console
         </Button>
       </form>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ArrowRight, CircleCheck } from 'lucide-react';
 
 export default function Hero() {
   const meters = [
@@ -24,12 +25,12 @@ export default function Hero() {
           <div className="hero-actions">
             <Link className="btn btn-primary" to="/apply">
               Postuler maintenant
-              <span className="material-symbols-outlined">arrow_forward</span>
+              <ArrowRight size={20} aria-hidden="true" />
             </Link>
             <a className="btn btn-secondary" href="#parcours">Découvrir le programme</a>
           </div>
           <span className="hero-note">
-            <span className="material-symbols-outlined">check_circle</span>
+            <CircleCheck size={20} aria-hidden="true" />
             Candidature directe et transparente sans création de compte requise.
           </span>
         </div>

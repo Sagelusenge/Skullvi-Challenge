@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import Button from '../../components/common/Button.jsx';
 import Input from '../../components/common/Input.jsx';
 import { createCandidate } from '../../services/candidateService.js';
@@ -136,7 +137,6 @@ export default function Apply() {
       <form className="panel form-grid candidate-form" onSubmit={submit}>
         <div className="field-wide form-intro">
           <span className="secure-chip"><span className="pulse-dot" /> Candidature SKULLVI HCP · Aucun compte requis</span>
-          <p className="eyebrow">Mini-Challenge — Talent Engine</p>
           <h1>Formulaire de candidature</h1>
           <p>
             Remplissez uniquement les informations essentielles pour permettre
@@ -222,7 +222,7 @@ export default function Apply() {
           {submitError && <p className="field-error">{submitError}</p>}
           <Button type="submit" disabled={submitting}>
             {submitting ? 'Enregistrement...' : 'Soumettre ma candidature'}
-            <span className="material-symbols-outlined">arrow_forward</span>
+            <ArrowRight size={20} aria-hidden="true" />
           </Button>
         </div>
       </form>
