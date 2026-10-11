@@ -18,7 +18,7 @@ export const pool = new pg.Pool({
   ssl: env.db.ssl ? { rejectUnauthorized: true } : undefined,
   options: `-c search_path=${env.db.schema}`,
   max: env.db.connectionLimit,
-  connectionTimeoutMillis: 10000,
+  connectionTimeoutMillis: env.db.connectionTimeoutMillis,
   idleTimeoutMillis: 30000
 });
 
@@ -32,6 +32,7 @@ export async function execute(sql, params = [], connection = null) {
 
 export async function transaction(callback) {
   const connection = await pool.connect();
+  let discardConnection = false;
 
   try {
     await connection.query('BEGIN');
@@ -39,10 +40,14 @@ export async function transaction(callback) {
     await connection.query('COMMIT');
     return result;
   } catch (error) {
-    await connection.query('ROLLBACK');
+    try {
+      await connection.query('ROLLBACK');
+    } catch {
+      discardConnection = true;
+    }
     throw error;
   } finally {
-    connection.release();
+    connection.release(discardConnection);
   }
 }
 

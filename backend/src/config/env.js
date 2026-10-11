@@ -22,7 +22,8 @@ export const env = {
     database: process.env.DB_NAME || 'skullvi_talent_engine',
     user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || '',
-    connectionLimit: numberFromEnv('DB_CONNECTION_LIMIT', 10)
+    connectionLimit: numberFromEnv('DB_CONNECTION_LIMIT', 10),
+    connectionTimeoutMillis: numberFromEnv('DB_CONNECTION_TIMEOUT_MS', 30000)
   },
   jwtSecret: process.env.JWT_SECRET || 'replace-this-secret',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '8h',

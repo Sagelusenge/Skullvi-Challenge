@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
 import { randomUUID } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bcrypt from 'bcryptjs';
@@ -15,6 +16,7 @@ const { createAdmin } = await import('../src/repositories/admin.repository.js');
 const candidates = await import('../src/repositories/candidate.repository.js');
 const { submitCandidate } = await import('../src/services/candidate.service.js');
 const migrateScript = resolve(dirname(fileURLToPath(import.meta.url)), '../scripts/migrate.js');
+const runFile = promisify(execFile);
 let token;
 let candidateId;
 let schemaCreated = false;
@@ -39,9 +41,9 @@ before(async () => {
   await pool.query(`CREATE SCHEMA "${schema}"`);
   schemaCreated = true;
   // Child processes exercise the actual migration runner, including reruns.
-  execFileSync(process.execPath, [migrateScript], { env: process.env, timeout: 60000, stdio: 'pipe' });
+  await runFile(process.execPath, [migrateScript], { env: process.env, timeout: 120000 });
   await execute("UPDATE scoring_criteria SET criterion_name = 'Customized motivation' WHERE criterion_key = 'motivation'");
-  execFileSync(process.execPath, [migrateScript], { env: process.env, timeout: 60000, stdio: 'pipe' });
+  await runFile(process.execPath, [migrateScript], { env: process.env, timeout: 120000 });
   assert.equal((await execute("SELECT criterion_name FROM scoring_criteria WHERE criterion_key = 'motivation'"))[0].criterion_name, 'Customized motivation');
   assert.equal((await execute('SELECT COUNT(*) AS total FROM candidates'))[0].total, '0');
   assert.equal((await execute('SELECT COUNT(*) AS total FROM scoring_criteria'))[0].total, '5');

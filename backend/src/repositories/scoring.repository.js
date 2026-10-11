@@ -17,7 +17,7 @@ export async function getActiveCriteria(connection = null) {
 }
 
 export async function updateCriteria(criteria, connection = null) {
-  await Promise.all(criteria.map((criterion) => execute(
+  for (const criterion of criteria) await execute(
     `UPDATE scoring_criteria
      SET weight = $1, max_score = $2, is_active = $3, updated_at = CURRENT_TIMESTAMP
      WHERE criterion_key = $4`,
@@ -28,7 +28,7 @@ export async function updateCriteria(criteria, connection = null) {
       criterion.criterionKey ?? criterion.criterion_key
     ],
     connection
-  )));
+  );
 
   return listCriteria(false, connection);
 }

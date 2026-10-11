@@ -142,12 +142,12 @@ export async function createCandidate(data, connection) {
 
 export async function addCandidateSkills(candidateId, skills, connection) {
   if (!skills.length) return;
-  await Promise.all(skills.map((skill) => execute(
+  for (const skill of skills) await execute(
     `INSERT INTO candidate_skills (candidate_id, skill_name, proficiency_level)
      VALUES ($1, $2, $3)`,
     [candidateId, skill.name, skill.level],
     connection
-  )));
+  );
 }
 
 export async function addCandidateProject(candidateId, project, connection) {
@@ -209,13 +209,13 @@ export async function getCandidateProject(candidateId) {
 
 export async function replaceCandidateScoreDetails(candidateId, details, connection) {
   await execute('DELETE FROM candidate_score_details WHERE candidate_id = $1', [candidateId], connection);
-  await Promise.all(details.map((detail) => execute(
+  for (const detail of details) await execute(
     `INSERT INTO candidate_score_details
       (candidate_id, criterion_key, raw_score, weighted_score, max_score, explanation)
      VALUES ($1, $2, $3, $4, $5, $6)`,
     [candidateId, detail.criterion, detail.rawScore, detail.weightedScore, detail.maxScore, detail.explanation],
     connection
-  )));
+  );
 }
 
 export async function getCandidateScoreDetails(candidateId) {
